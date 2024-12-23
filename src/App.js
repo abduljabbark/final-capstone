@@ -4,16 +4,17 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomeSection from "./components/HomePage/HomeSection";
 import RestorentsPage from "./components/Restorentspage/Restorentspage.jsx";
-import Header from "./components/Header/Header.jsx";
 import { Provider } from "react-redux";
 import { store } from "./Store.js";
+import 'react-toastify/dist/ReactToastify.css';
+import Navbar from "./components/Header/Header.jsx";
 
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Header />,
+      element: <Navbar />,
       children: [
         {
           path: "",

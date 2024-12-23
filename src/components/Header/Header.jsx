@@ -10,12 +10,13 @@ import {
   MenuItem,
   Stack,
   Container,
+  Badge,
 } from "@mui/material";
 
 import FoodPandaLogo from "../../images/food panda logo.png";
 import CloseIcon from "@mui/icons-material/Close";
 import LanguageIcon from "@mui/icons-material/Language";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import { Outlet } from "react-router-dom";
 import CartDrawer from "../Restorentspage/Drawer/CartDrawer";
 
@@ -49,7 +50,7 @@ console.log(count,'count');
       <Box>
         {/* Top Pink Banner */}
         {showBanner && (
-          <Box
+          <Box position="sticky"
             sx={{
               backgroundColor: "#ec008c",
               color: "#fff",
@@ -90,8 +91,8 @@ console.log(count,'count');
         )}
 
         {/* Main Navbar */}
-        <AppBar
-          position="static"
+        <AppBar 
+          position="sticky"
           elevation={0}
           sx={{
             backgroundColor: "#fff",
@@ -169,9 +170,9 @@ console.log(count,'count');
                 </Menu>
 
                 {/* Cart Icon */}
-                <IconButton color="inherit" onClick={toggleCartDrawer(true)}>
-                  <ShoppingBagIcon />
-                </IconButton>
+                <Badge  badgeContent={count?.value} color="inherit" >
+                  <ShoppingBagOutlinedIcon onClick={toggleCartDrawer(true)}/>
+                </Badge>
               </Stack>
             </Toolbar>
           </Container>

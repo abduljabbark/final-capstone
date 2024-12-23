@@ -1,7 +1,18 @@
 import React from "react";
 import { Drawer, Box, Typography, List, ListItem, ListItemText, Button } from "@mui/material";
+import { useSelector } from "react-redux";
+
+
+
+
+
 
 const CartDrawer = ({ cartDrawerOpen, toggleCartDrawer }) => {
+
+const {items} = useSelector((state)=> state.products);
+console.log(items , "products");
+
+
   return (
     <Drawer anchor="right" open={cartDrawerOpen} onClose={toggleCartDrawer(false)}>
       <Box sx={{ width: 300, p: 2 }}>
