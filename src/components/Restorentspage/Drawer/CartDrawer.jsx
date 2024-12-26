@@ -1,44 +1,92 @@
 import React from "react";
-import { Drawer, Box, Typography, List, ListItem, ListItemText, Button } from "@mui/material";
-import { useSelector } from "react-redux";
-
-
-
-
-
+import { Drawer, Box, Typography, IconButton } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  incrementQuantity,
+  decrementQuantity,
+  removeProduct,
+} from "../../../slices/products/productsSlice";
 
 const CartDrawer = ({ cartDrawerOpen, toggleCartDrawer }) => {
+  const { items } = useSelector((state) => state.products);
+  const dispatch = useDispatch();
 
-const {items} = useSelector((state)=> state.products);
-console.log(items , "products");
-
+  // Helper function to truncate text
+  const truncateText = (text, maxLength) => {
+    return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+  };
 
   return (
-    <Drawer anchor="right" open={cartDrawerOpen} onClose={toggleCartDrawer(false)}>
+    <Drawer
+      anchor="right"
+      open={cartDrawerOpen}
+      onClose={toggleCartDrawer(false)}
+    >
       <Box sx={{ width: 300, p: 2 }}>
         <Typography variant="h6" sx={{ mb: 2 }}>
           Your Cart
         </Typography>
-        <List>
-          <ListItem>
-            <ListItemText primary="Product 1" secondary="Price: $10" />
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Product 2" secondary="Price: $15" />
-          </ListItem>
-        </List>
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#ec008c",
-            color: "#fff",
-            mt: 2,
-            width: "100%",
-            "&:hover": { backgroundColor: "#d0077c" },
-          }}
-        >
-          Checkout
-        </Button>
+
+        {items?.length > 0 ? (
+          items.map((item) => (
+            <Box
+              key={item.id}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                mb: 2,
+                borderBottom: "1px solid #ddd",
+                pb: 1,
+              }}
+            >
+              <img
+                src={item.image}
+                alt={item.title}
+                style={{
+                  width: "60px",
+                  height: "60px",
+                  objectFit: "cover",
+                  borderRadius: "8px",
+                }}
+              />
+              <Box sx={{ flex: 1, mx: 2 }}>
+                <Typography variant="body1" noWrap>
+                  {truncateText(item.title, 15)} {/* Truncate name if > 15 chars */}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Price: ${item.price || "N/A"}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Quantity: {item.quantity}
+                </Typography>
+              </Box>
+              <Box>
+                <IconButton
+                  size="small"
+                  onClick={() => dispatch(incrementQuantity(item.id))}
+                >
+                  +
+                </IconButton>
+                <IconButton
+                  size="small"
+                  onClick={() => dispatch(decrementQuantity(item.id))}
+                >
+                  -
+                </IconButton>
+                <IconButton
+                  size="small"
+                  color="error"
+                  onClick={() => dispatch(removeProduct(item.id))}
+                >
+                  ✕
+                </IconButton>
+              </Box>
+            </Box>
+          ))
+        ) : (
+          <Typography>No items in the cart</Typography>
+        )}
       </Box>
     </Drawer>
   );

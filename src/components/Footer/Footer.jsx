@@ -6,6 +6,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import Logo from "../../images/Logo.jpeg";
 import DeliveryImg from "../../images/DeliveryHero.jpeg";
+import { Outlet } from 'react-router-dom';
 
 
 
@@ -210,7 +211,7 @@ const Footer = () => {
         </Box>
 
       </Box>
-
+<Outlet/>
 
 
     </>
