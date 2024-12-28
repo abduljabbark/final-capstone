@@ -1,28 +1,4 @@
-// import { Box, } from "@mui/material";
-// import DeliveryPaymentSection from "./DeliveryPaymentSection/DeliveryPaymentSection"; // Import the component
-// import SecondApi from "./SecondApi/SecondApi";
-// import OneProduct from "./OneProduct/OneProduct";
-// import SecondNavbar from "./SecondNavbar/SecondNavbar";
-// import FirstNavbar from "./FirstNavbar/FirstNavbar";
 
-// const ProductDetail = () => {
-
-
-//   return (
-//     <Box
-//       sx={{ paddingLeft: { xs: "20px", sm: "50px", md: "120px" }, marginTop: "20px", marginLeft: { xs: "0", sm: "20px", md: "40px" },backgroundColor: "#fff", maxWidth: "90%", marginRight: "auto", paddingBottom: "20px", width: "100%",}}>
-//       <FirstNavbar />
-//       <OneProduct />
-//       <SecondNavbar />
-//       <Box sx={{ display: "flex", gap: 4, padding: 2 }}>
-//         <SecondApi />
-//         <DeliveryPaymentSection />
-//       </Box>
-//     </Box>
-//   );
-// };
-
-// export default ProductDetail;
 import { Box } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -74,7 +50,7 @@ const ProductDetail = () => {
       <FirstNavbar />
       <OneProduct product={product} />  {/* Pass the product data to OneProduct */}
       <SecondNavbar />
-      <Box sx={{ display: "flex", gap: 4, padding: 2 }}>
+      <Box className=" d-flex flex-wrap" sx={{ display: "flex", gap: 4, padding: 2 }}>
         <SecondApi />
         <DeliveryPaymentSection />
       </Box>
