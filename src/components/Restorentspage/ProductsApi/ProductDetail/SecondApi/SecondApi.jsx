@@ -846,7 +846,6 @@
 // };
 
 // export default SecondApi;
-
 import React, { useState, useEffect } from "react"; 
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../../../slices/add-cart/addCartSlice";
@@ -861,16 +860,18 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  Typography as MuiTypography,
 } from "@mui/material";
 
 const SecondApi = () => {
   const [product, setProduct] = useState([]);
-  const [openModal, setOpenModal] = useState(false); // State to handle email modal
-  const [successModal, setSuccessModal] = useState(false); // State to handle success modal
-  const [email, setEmail] = useState(""); // State for email input
-  const [selectedItem, setSelectedItem] = useState(null); // State to store the selected product
-  const [emailError, setEmailError] = useState(""); // State for email error
+  const [openModal, setOpenModal] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [formErrors, setFormErrors] = useState({}); // State for form validation errors
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -884,34 +885,45 @@ const SecondApi = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       setSelectedItem(item);
-      setEmail(user.email); // Set email from logged-in user
-      setOpenModal(true); // Open the email confirmation modal
+      setEmail(user.email);
+      setOpenModal(true);
     } else {
       alert("Please log in to add products to the cart.");
     }
   };
 
+  const validateForm = () => {
+    const errors = {};
+    if (!name.trim()) errors.name = "Name is required.";
+    if (!email.trim()) errors.email = "Email is required.";
+    if (!phone.trim()) errors.phone = "Phone number is required.";
+    else if (!/^[0-9]{10}$/.test(phone)) errors.phone = "Phone number must be 10 digits.";
+    if (!address.trim()) errors.address = "Address is required.";
+    return errors;
+  };
+
   const handleSubmit = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (email && email === user.email) {
-      setEmailError(""); // Clear email error if email is correct
-      dispatch(
-        addToCart({
-          id: selectedItem.idMeal,
-          name: selectedItem.strMeal,
-          image: selectedItem.strMealThumb,
-          price: 100, // Example price
-        })
-      );
-      setOpenModal(false); // Close email confirmation modal
-      setSuccessModal(true); // Open success modal
-      setTimeout(() => {
-        setSuccessModal(false); // Auto-close success modal after 3 seconds
-      }, 3000);
-    } else if (!email) {
-      setEmailError("Please enter a valid email address.");
+    const errors = validateForm();
+    if (Object.keys(errors).length === 0) {
+      setFormErrors({});
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (email === user.email) {
+        dispatch(
+          addToCart({
+            id: selectedItem.idMeal,
+            name: selectedItem.strMeal,
+            image: selectedItem.strMealThumb,
+            price: 100, // Example price
+          })
+        );
+        setOpenModal(false);
+        setSuccessModal(true);
+        setTimeout(() => setSuccessModal(false), 3000);
+      } else {
+        setFormErrors({ email: "Email does not match the logged-in account." });
+      }
     } else {
-      setEmailError("Email does not match the logged-in account.");
+      setFormErrors(errors);
     }
   };
 
@@ -919,14 +931,7 @@ const SecondApi = () => {
     <Box sx={{ flex: 3, padding: 2 }}>
       <Grid container spacing={2}>
         {product?.map((item) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            lg={4}
-            key={item.idMeal}
-          >
+          <Grid item xs={12} sm={6} md={4} lg={4} key={item.idMeal}>
             <Box
               sx={{
                 position: "relative",
@@ -1030,10 +1035,10 @@ const SecondApi = () => {
         fullWidth
         PaperProps={{
           sx: {
-            borderRadius: "16px", // Increased border radius
+            borderRadius: "16px",
             padding: "16px",
             boxShadow: 3,
-            overflow: "hidden", // Prevent background from spilling
+            overflow: "hidden",
           },
         }}
       >
@@ -1045,36 +1050,52 @@ const SecondApi = () => {
             color: "#333",
           }}
         >
-          Please confirm your email to add this product to the cart.
+          Please confirm your details to add this product to the cart.
         </DialogTitle>
         <Box sx={{ padding: 3 }}>
-  <TextField
-    label="Email"
-    type="email"
-    fullWidth
-    value={email}
-    onChange={(e) => setEmail(e.target.value)}
-    sx={{
-      marginBottom: 3,
-      "& .MuiInputBase-root": {
-        fontSize: "1rem",
-      },
-      "& .MuiOutlinedInput-root": {
-        borderRadius: 1,
-        borderColor: "#333",
-      },
-    }}
-  />
-  {emailError && (
-    <Typography
-      variant="body2"
-      color="error"
-      sx={{ marginTop: 1 }}
-    >
-      {emailError}
-    </Typography>
-  )}
-</Box>
+          <TextField
+            label="Name"
+            type="text"
+            fullWidth
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            error={!!formErrors.name}
+            helperText={formErrors.name}
+            sx={{ marginBottom: 2 }}
+          />
+          <TextField
+            label="Email"
+            type="email"
+            fullWidth
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            error={!!formErrors.email}
+            helperText={formErrors.email}
+            sx={{ marginBottom: 2 }}
+          />
+          <TextField
+            label="Phone Number"
+            type="tel"
+            fullWidth
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            error={!!formErrors.phone}
+            helperText={formErrors.phone}
+            sx={{ marginBottom: 2 }}
+          />
+          <TextField
+            label="Address"
+            type="text"
+            fullWidth
+            multiline
+            rows={3}
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            error={!!formErrors.address}
+            helperText={formErrors.address}
+            sx={{ marginBottom: 2 }}
+          />
+        </Box>
 
         <DialogActions
           sx={{ justifyContent: "space-between", paddingBottom: 2, paddingX: 3 }}
@@ -1113,7 +1134,7 @@ const SecondApi = () => {
         fullWidth
         PaperProps={{
           sx: {
-            borderRadius: "16px", // Increased border radius for consistency
+            borderRadius: "16px",
           },
         }}
       >
