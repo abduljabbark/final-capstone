@@ -866,12 +866,11 @@ const SecondApi = () => {
   const [product, setProduct] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
+  const [name, setName] = useState(""); // Default to empty string
+  const [phone, setPhone] = useState(""); // Default to empty string
+  const [address, setAddress] = useState(""); // Default to empty string
   const [selectedItem, setSelectedItem] = useState(null);
-  const [formErrors, setFormErrors] = useState({}); // State for form validation errors
+  const [formErrors, setFormErrors] = useState({});
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -885,7 +884,7 @@ const SecondApi = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       setSelectedItem(item);
-      setEmail(user.email);
+      setName(user.name);
       setOpenModal(true);
     } else {
       alert("Please log in to add products to the cart.");
@@ -894,11 +893,10 @@ const SecondApi = () => {
 
   const validateForm = () => {
     const errors = {};
-    if (!name.trim()) errors.name = "Name is required.";
-    if (!email.trim()) errors.email = "Email is required.";
-    if (!phone.trim()) errors.phone = "Phone number is required.";
+    if (!name?.trim()) errors.name = "Name is required."; // Safe check
+    if (!phone?.trim()) errors.phone = "Phone number is required.";
     else if (!/^[0-9]{10}$/.test(phone)) errors.phone = "Phone number must be 10 digits.";
-    if (!address.trim()) errors.address = "Address is required.";
+    if (!address?.trim()) errors.address = "Address is required.";
     return errors;
   };
 
@@ -907,21 +905,17 @@ const SecondApi = () => {
     if (Object.keys(errors).length === 0) {
       setFormErrors({});
       const user = JSON.parse(localStorage.getItem("user"));
-      if (email === user.email) {
-        dispatch(
-          addToCart({
-            id: selectedItem.idMeal,
-            name: selectedItem.strMeal,
-            image: selectedItem.strMealThumb,
-            price: 100, // Example price
-          })
-        );
-        setOpenModal(false);
-        setSuccessModal(true);
-        setTimeout(() => setSuccessModal(false), 3000);
-      } else {
-        setFormErrors({ email: "Email does not match the logged-in account." });
-      }
+      dispatch(
+        addToCart({
+          id: selectedItem.idMeal,
+          name: selectedItem.strMeal,
+          image: selectedItem.strMealThumb,
+          price: 100, // Example price
+        })
+      );
+      setOpenModal(false);
+      setSuccessModal(true);
+      setTimeout(() => setSuccessModal(false), 3000);
     } else {
       setFormErrors(errors);
     }
@@ -1027,7 +1021,7 @@ const SecondApi = () => {
         ))}
       </Grid>
 
-      {/* Email Confirmation Modal */}
+      {/* Details Confirmation Modal */}
       <Dialog
         open={openModal}
         onClose={() => setOpenModal(false)}
@@ -1064,16 +1058,6 @@ const SecondApi = () => {
             sx={{ marginBottom: 2 }}
           />
           <TextField
-            label="Email"
-            type="email"
-            fullWidth
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={!!formErrors.email}
-            helperText={formErrors.email}
-            sx={{ marginBottom: 2 }}
-          />
-          <TextField
             label="Phone Number"
             type="tel"
             fullWidth
@@ -1097,9 +1081,7 @@ const SecondApi = () => {
           />
         </Box>
 
-        <DialogActions
-          sx={{ justifyContent: "space-between", paddingBottom: 2, paddingX: 3 }}
-        >
+        <DialogActions sx={{ justifyContent: "space-between", paddingBottom: 2, paddingX: 3 }}>
           <Button
             onClick={() => setOpenModal(false)}
             sx={{
