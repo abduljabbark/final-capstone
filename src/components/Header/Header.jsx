@@ -992,7 +992,7 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
-import FoodPandaLogo from "../../images/food panda logo.png";
+import FoodPandaLogo from "../../images/foodpanda-logo.png";
 import CloseIcon from "@mui/icons-material/Close";
 import LanguageIcon from "@mui/icons-material/Language";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
