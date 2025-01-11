@@ -8,6 +8,7 @@ import DeliveryPaymentSection from "./DeliveryPaymentSection/DeliveryPaymentSect
 import FirstNavbar from "./FirstNavbar/FirstNavbar";
 import SecondNavbar from "./SecondNavbar/SecondNavbar";
 import axios from "axios";
+import Footer from "../../../Footer/Footer";
 
 const ProductDetail = () => {
   const { id } = useParams();  // Get the product ID from the URL
@@ -39,7 +40,7 @@ const ProductDetail = () => {
       sx={{
         paddingLeft: { xs: "20px", sm: "50px", md: "120px" },
         marginTop: "20px",
-        marginLeft: { xs: "0", sm: "20px", md: "40px" },
+        marginLeft: { xs: "0", sm: "20px", md: "100px" },
         backgroundColor: "#fff",
         maxWidth: "90%",
         marginRight: "auto",
@@ -54,6 +55,7 @@ const ProductDetail = () => {
         <SecondApi />
         <DeliveryPaymentSection />
       </Box>
+      <Footer/>
     </Box>
   );
 };
