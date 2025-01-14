@@ -114,14 +114,30 @@ const Cities = () => {
   return (
     <Box sx={{ backgroundColor: "#f9f9f9", py: 4 }}>
       <Box sx={{ textAlign: "center", mb: 3 }}>
-        <Typography
-          variant="h4"
-          fontSize="45px"
-          fontWeight="700"
-          sx={{ textAlign: "left", ml: 39 }}
-        >
-          Find us in these cities and many more!
-        </Typography>
+      <Typography
+  variant="h4"
+  fontWeight="bolder"
+  sx={{
+    margin: "20px auto",  // Adds margin above and below the text
+    textAlign: {
+      xs: "center",  // Center the text for smaller screens
+      md: "left",    // Align left for desktop and larger screens
+    },
+    fontSize: {
+      xs: "2rem",    // Mobile devices
+      sm: "2.5rem",  // Tablets
+      md: "3rem",    // Larger screens
+    },
+    wordWrap: "break-word",  // Prevents long text overflow
+    ml: {
+      xs: 0,         // No margin on mobile devices
+      md: "17%",     // Adds left margin to push the text more to the right on desktop screens
+    },
+  }}
+>
+  Find us in these cities and many more!
+</Typography>
+
       </Box>
       <Box sx={{ mx: "auto", maxWidth: 1300, px: 2 }}>
         <Grid container spacing={3}>
