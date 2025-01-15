@@ -27,20 +27,21 @@ const ProductsApi = () => {
   const fetchProducts = () => {
     setIsLoading(true);
     const dummyProducts = [
-      { id: 1, title: "Madina Restaurent", image: Product1, rating: 4 },
-      { id: 2, title: "Shezan Bakers-Cavalry Ground", image: Product2, rating: 5 },
-      { id: 3, title: "Quetta Paratha-111", image: Product3, rating: 3 },
-      { id: 4, title: "Ahmad Dahi Bhallay - Cavalry Ground", image: Product4, rating: 4 },
-      { id: 5, title: "Desi Feast (Taste Of Real Spices)", image: Product5, rating: 5 },
-      { id: 6, title: "Anmool Nan shop", image: Product6, rating: 2 },
-      { id: 7, title: "Lahore Broast - DHA", image: Product7, rating: 3 },
-      { id: 8, title: "Faisal Zahoor Restaurant", image: Product8, rating: 4 },
-      { id: 9, title: "Mama Bear’s Cookery", image: Product9, rating: 5 },
-      { id: 10, title: "Haagen Dazs - Kasoori Road", image: Product10, rating: 2 },
-      { id: 11, title: "Pazookie - Cantt", image: Product11, rating: 4 },
-      { id: 12, title: "Phulka Cuisine", image: Product12, rating: 3 },
-      { id: 13, title: "Kent Broast", image: Product13, rating: 5 },
+      { id: 1, title: "Madina Restaurent", image: Product1, rating: 4, price: 100 },
+      { id: 2, title: "Shezan Bakers-Cavalry Ground", image: Product2, rating: 5, price: 150 },
+      { id: 3, title: "Quetta Paratha-111", image: Product3, rating: 3, price: 180 },
+      { id: 4, title: "Ahmad Dahi Bhallay - Cavalry Ground", image: Product4, rating: 4, price: 120 },
+      { id: 5, title: "Desi Feast (Taste Of Real Spices)", image: Product5, rating: 5, price: 200 },
+      { id: 6, title: "Anmool Nan shop", image: Product6, rating: 2, price: 60 },
+      { id: 7, title: "Lahore Broast - DHA", image: Product7, rating: 3, price: 140 },
+      { id: 8, title: "Faisal Zahoor Restaurant", image: Product8, rating: 4, price: 180 },
+      { id: 9, title: "Mama Bear’s Cookery", image: Product9, rating: 5, price: 220 },
+      { id: 10, title: "Haagen Dazs - Kasoori Road", image: Product10, rating: 2, price: 250 },
+      { id: 11, title: "Pazookie - Cantt", image: Product11, rating: 4, price: 130 },
+      { id: 12, title: "Phulka Cuisine", image: Product12, rating: 3, price: 90 },
+      { id: 13, title: "Kent Broast", image: Product13, rating: 5, price: 170 },
     ];
+    
     setProducts(dummyProducts);
     setIsLoading(false);
   };
@@ -78,6 +79,7 @@ const ProductsApi = () => {
                     position: "relative",
                   }}
                   onClick={() => navigate(`/product/${product.title.replace(/\s+/g, "-").toLowerCase()}`, { state: product })}
+
                 >
                   <Box
                     sx={{

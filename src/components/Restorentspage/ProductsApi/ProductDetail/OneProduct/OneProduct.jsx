@@ -201,10 +201,16 @@
 // };
 
 // export default OneProduct;
-import React from "react";
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Grid, Stack, Typography, Button } from "@mui/material";
+import DeliveryModal from "./DeliveryModal/DeliveryModal";  // Import the modal component
 
 const OneProduct = ({ product }) => {
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
   if (!product) {
     return <Typography variant="h6">No product selected</Typography>;
   }
@@ -238,14 +244,60 @@ const OneProduct = ({ product }) => {
           <Typography variant="h4" sx={{ fontWeight: "bold" }}>
             {product.title}
           </Typography>
-          <Typography variant="body1" sx={{ color: "#757575", display: 'flex', alignItems: 'center' }}>
-  Rating:
-  <Typography sx={{ color: "#FFB413", marginLeft: 0.5 }}>★</Typography> 
-  {product.rating}({product.rating * 40}+)
-</Typography>
+          
+          {/* Price above Rating */}
+          <Typography variant="h6" sx={{fontSize: "15px", fontWeight: "bold", marginTop: 1 }}>
+            Price: {product.price}
+          </Typography>
+
+          {/* Flexbox for Rating and More Info Button */}
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography variant="body1" sx={{ color: "#757575", display: "flex", alignItems: "center" }}>
+              Rating:
+              <Typography sx={{ color: "#FFB413", marginLeft: 0.5 }}>★</Typography> 
+              {product.rating}({product.rating * 40}+)
+            </Typography>
+
+            {/* More Info Button */}
+            <Button 
+              variant="outlined" 
+              sx={{ 
+                fontWeight: 'bold',  // Increase font weight
+                color: 'black',  // Set text color to black
+                borderColor: 'transparent',  // Remove border color
+                position: 'relative',  // To position the pseudo-element
+                overflow: 'hidden',  // Ensure the line stays within the button's bounds
+                '&:hover': {
+                  color: 'black',  // Keep text black on hover
+                },
+                '&::after': {
+                  content: '""',  // Empty content for the pseudo-element
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  width: '100%',  // Full width of the button
+                  height: '2px',  // Line height
+                  backgroundColor: 'black',  // Line color
+                  transform: 'scaleX(0)',  // Initially, the line is not visible
+                  transformOrigin: 'bottom right',  // Origin for scaling
+                  transition: 'transform 0.3s ease-out',  // Smooth animation
+                },
+                '&:hover::after': {
+                  transform: 'scaleX(1)',  // Show the line on hover
+                  transformOrigin: 'bottom left',  // Change origin to bottom left
+                }
+              }} 
+              onClick={handleOpenModal}
+            >
+              More Info
+            </Button>
+          </Stack>
 
         </Stack>
       </Grid>
+
+      {/* Modal for More Info */}
+      <DeliveryModal open={openModal} onClose={handleCloseModal} product={product} />
     </Grid>
   );
 };

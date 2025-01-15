@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../../../slices/add-cart/addCartSlice";
+import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import {
   Box,
@@ -10,7 +11,10 @@ import {
   Dialog,
   DialogActions,
   DialogTitle,
+  Card,
+  CardContent,
 } from "@mui/material";
+import { Star } from "@mui/icons-material"; // Importing the star icon
 
 const SecondApi = () => {
   const [product, setProduct] = useState([]);
@@ -22,7 +26,14 @@ const SecondApi = () => {
   useEffect(() => {
     axios
       .get("https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood")
-      .then((response) => setProduct(response.data.meals))
+      .then((response) => {
+        // Add random ratings to the products
+        const productsWithRatings = response.data.meals.map((item) => ({
+          ...item,
+          rating: Math.floor(Math.random() * 5) + 1, // Random rating between 1 and 5
+        }));
+        setProduct(productsWithRatings);
+      })
       .catch((error) => console.log(error));
   }, []);
 
@@ -49,6 +60,21 @@ const SecondApi = () => {
     setOpenModal(false);
     setSuccessModal(true);
     setTimeout(() => setSuccessModal(false), 3000);
+  };
+
+  // Function to render the star and the rating number
+  const renderRating = (rating) => {
+    return (
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Star sx={{ color: "#ff9800" ,fontSize: "15px" }} /> {/* Display one filled star */}
+        <Typography
+          variant="body2"
+          sx={{ marginLeft: "5px", color: "#333", fontSize: "15px" }}
+        >
+          {rating} {/* Display numeric rating */}
+        </Typography>
+      </Box>
+    );
   };
 
   return (
@@ -100,6 +126,23 @@ const SecondApi = () => {
                 >
                   Rs. 100
                 </Typography>
+                <Typography 
+  sx={{
+    fontSize: '1rem', 
+    fontWeight: '600', 
+    color: '#444', 
+    display: 'flex', 
+    alignItems: 'center', 
+    gap: '5px', 
+    letterSpacing: '0.5px',
+    marginBottom: '10px', // Adds space below the rating
+  }}
+>
+  Rating: 
+  {renderRating(item.rating)} {/* Show one star with the rating */}
+</Typography>
+
+
               </Box>
 
               <Box
@@ -152,112 +195,161 @@ const SecondApi = () => {
       </Grid>
 
       {/* Details Confirmation Modal */}
-      <Dialog
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{
-          sx: {
-            borderRadius: "16px",
-            padding: "16px",
-            boxShadow: 3,
-            overflow: "hidden",
-          },
-        }}
-      >
-        <DialogTitle
-          sx={{
-            textAlign: "center",
-            fontWeight: "bold",
-            fontSize: "1.2rem",
-            color: "#333",
-          }}
-        >
-          Product Details
-        </DialogTitle>
-        {selectedItem && (
-          <Box
+      <Dialog open={openModal} onClose={() => setOpenModal(false)} maxWidth="sm" >
+      <Box display="flex" justifyContent="center" p={2}>
+        <Card sx={{ maxWidth: 500, position: "relative" }}>
+          {/* Close Icon */}
+          <CloseIcon
+            aria-label="close"
+            onClick={() => setOpenModal(false)}
             sx={{
-              padding: 3,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center",
-              gap: 2,
+              position: "absolute",
+              top: 8,
+              right: 8,
+              backgroundColor: "#f1f1f1",
+              color: "#000",
+              borderRadius: "100%",
+              width: "30px",
+              height: "30px",
+              "&:hover": { backgroundColor: "#e0e0e0" },
             }}
-          >
-            {/* Product Image */}
-            <Box
-              component="img"
-              src={selectedItem.strMealThumb}
-              alt={selectedItem.strMeal}
-              sx={{
-                width: "150px",
-                height: "150px",
-                objectFit: "cover",
-                borderRadius: 2,
-              }}
-            />
-
-            {/* Product Name */}
+          />
+          <CardContent>
+            {/* Modal Title */}
             <Typography
-              variant="h6"
+              variant="h5"
+              fontWeight="bold"
               sx={{
-                fontWeight: "bold",
-                color: "#333",
-                textTransform: "uppercase",
-              }}
-            >
-              {selectedItem.strMeal}
-            </Typography>
-
-            {/* Product Price */}
-            <Typography
-              variant="body2"
-              sx={{
+                textAlign: "center",
                 fontSize: "1.2rem",
                 color: "#333",
               }}
             >
-              Price: Rs. 100
+              Product Details
             </Typography>
-          </Box>
-        )}
 
-        <DialogActions
-          sx={{
-            justifyContent: "space-between",
-            paddingBottom: 2,
-            paddingX: 3,
-          }}
-        >
-          <Button
-            onClick={() => setOpenModal(false)}
+            {/* Product Information */}
+            {selectedItem && (
+              <Box
+                sx={{
+                  padding: 3,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "left",
+                  textAlign: "left",
+                  gap: 2,
+                }}
+              >
+                   {/* Product Name */}
+                   <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: "bold",
+                    color: "#333",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {selectedItem.strMeal}
+                </Typography>
+                
+                {/* Rating */}
+                <Typography
+                  sx={{
+                    fontSize: "1.2rem",
+                    fontWeight: "500",
+                    color: "#333",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  Rating: {renderRating(selectedItem.rating)} {/* Show one star with the rating */}
+                </Typography>
+                {/* Product Image */}
+                <Box
+                  component="img"
+                  src={selectedItem.strMealThumb}
+                  alt={selectedItem.strMeal}
+                  sx={{
+                    width: "100%",
+                    height: "150px",
+                    objectFit: "cover",
+                    borderRadius: 2,
+                  }}
+                />
+
+             
+
+                {/* Product Price */}
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontSize: "1.2rem",
+                    color: "#333",
+                  }}
+                >
+                  Price: Rs. 100
+                </Typography>
+
+              </Box>
+            )}
+
+            {/* Delivery Information */}
+            <Box mt={2}>
+              <Typography variant="body1" fontWeight="bold">
+                Delivery fee
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Delivery fee is charged based on time of day, distance, and surge conditions.
+              </Typography>
+            </Box>
+
+            <Box mt={2}>
+              <Typography variant="body1" fontWeight="bold">
+                Minimum order
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                For orders below Rs. 249.00, we charge a small order fee.
+              </Typography>
+            </Box>
+          </CardContent>
+
+          {/* Action Buttons */}
+          <DialogActions
             sx={{
-              color: "#333",
-              textTransform: "none",
-              fontWeight: "bold",
+              justifyContent: "space-between",
+              paddingBottom: 2,
+              paddingX: 3,
             }}
           >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            sx={{
-              backgroundColor: "#e91e63",
-              color: "white",
-              padding: "8px 16px",
-              textTransform: "none",
-              fontWeight: "bold",
-              "&:hover": { backgroundColor: "#d81b60" },
-            }}
-          >
-            Add to Cart
-          </Button>
-        </DialogActions>
-      </Dialog>
-
+            <Button
+              onClick={() => setOpenModal(false)}
+              sx={{
+                color: "#333",
+                textTransform: "none",
+                fontWeight: "bold",
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              sx={{
+                backgroundColor: "#e91e63",
+                color: "white",
+                padding: "8px 16px",
+                textTransform: "none",
+                fontWeight: "bold",
+                "&:hover": { backgroundColor: "#d81b60" },
+              }}
+            >
+              Add to Cart
+            </Button>
+          </DialogActions>
+        </Card>
+      </Box>
+    </Dialog>
       {/* Success Modal */}
       <Dialog
         open={successModal}

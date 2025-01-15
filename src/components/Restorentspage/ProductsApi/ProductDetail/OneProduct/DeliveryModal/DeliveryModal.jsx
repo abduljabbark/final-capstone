@@ -1,18 +1,11 @@
 import React from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Dialog,
-  Typography,
-} from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Dialog, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import QuettaMap from "../../../../../../images/quetta-map.png"; // Update the path as needed
 
-const DeliveryModal = ({ open, onClose }) => {
+const DeliveryModal = ({ open, onClose, product }) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <Box display="flex" justifyContent="center" p={2}>
@@ -33,42 +26,28 @@ const DeliveryModal = ({ open, onClose }) => {
             }}
           />
           <CardContent>
-            <Box display="flex">
-              <Typography variant="h4">
-                Quetta Paratha – <span style={{ fontWeight: "bold" }}>111</span>
-              </Typography>
-            </Box>
-            <Box mt={2}>
-              <Box display="flex" alignItems="center" color="black">
-                <AccessTimeIcon />
-                <Typography
-                  variant="body1"
-                  fontWeight="bold"
-                  paddingLeft={"10px"}
-                >
-                  Now Open
-                </Typography>
-              </Box>
-              <Typography variant="body2" color="textSecondary">
-                Monday – Sunday
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                00:00 – 23:59
-              </Typography>
-            </Box>
-            <Box mt={2} display="flex" alignItems="center">
-              <LocationOnIcon />
-              <Typography variant="body2" color="textPrimary">
-                Market, Cavalry Ground.
-              </Typography>
-            </Box>
+            <Typography variant="h5" fontWeight="bold">
+              {product.title} {/* Displaying Product Name */}
+            </Typography>
+            <Typography variant="body1" sx={{ marginTop: 1 }}>
+              Rating: 
+              <Typography sx={{ color: "#FFB413", marginLeft: 0.5 }}>★</Typography> 
+              {product.rating} ({product.rating * 40}+)
+            </Typography>
+
+            {/* Keeping the rest of the modal details intact */}
             <Box mt={2}>
               <CardMedia
                 component="img"
-                height="140"
-                src={QuettaMap}
-                alt="Map showing the location of Mini Market, Cavalry Ground with nearby landmarks and streets."
+                height="200"
+                image={product.image}
+                alt={product.title}
               />
+            </Box>
+            <Box mt={2}>
+              <Typography variant="body1" fontWeight="bold">
+                Price: {product.price}
+              </Typography>
             </Box>
             <Box mt={2}>
               <Typography variant="body1" fontWeight="bold">
