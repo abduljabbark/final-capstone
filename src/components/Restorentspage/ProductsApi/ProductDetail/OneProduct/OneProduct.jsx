@@ -150,14 +150,61 @@
 
 // export default OneProduct;
 
+// import React from "react";
+// import { Box, Grid, Stack, Typography } from "@mui/material";
+// import { useLocation } from "react-router-dom";
+
+// const OneProduct = () => {
+//   const location = useLocation();
+//   const product = location.state; // Access passed product data
+
+//   if (!product) {
+//     return <Typography variant="h6">No product selected</Typography>;
+//   }
+
+//   return (
+//     <Grid
+//       container
+//       alignItems="center"
+//       sx={{
+//         borderRadius: "8px",
+//         backgroundColor: "#fff",
+//         padding: "1rem",
+//         flexDirection: { xs: "column", sm: "row" },
+//       }}
+//     >
+//       <Grid item xs="auto">
+//         <Box
+//           component="img"
+//           src={product.image}
+//           alt={product.title}
+//           sx={{
+//             width: { xs: "150px", sm: "200px" },
+//             height: { xs: "150px", sm: "200px" },
+//             borderRadius: "8px",
+//             objectFit: "cover",
+//           }}
+//         />
+//       </Grid>
+//       <Grid item xs>
+//         <Stack spacing={1} sx={{ marginLeft: { sm: "1rem" }, textAlign: { xs: "center", sm: "left" } }}>
+//           <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+//             {product.title}
+//           </Typography>
+//           <Typography variant="body1" sx={{ color: "#757575" }}>
+//             Rating: {product.rating}★
+//           </Typography>
+//         </Stack>
+//       </Grid>
+//     </Grid>
+//   );
+// };
+
+// export default OneProduct;
 import React from "react";
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import { useLocation } from "react-router-dom";
 
-const OneProduct = () => {
-  const location = useLocation();
-  const product = location.state; // Access passed product data
-
+const OneProduct = ({ product }) => {
   if (!product) {
     return <Typography variant="h6">No product selected</Typography>;
   }
@@ -191,9 +238,12 @@ const OneProduct = () => {
           <Typography variant="h4" sx={{ fontWeight: "bold" }}>
             {product.title}
           </Typography>
-          <Typography variant="body1" sx={{ color: "#757575" }}>
-            Rating: {product.rating}★
-          </Typography>
+          <Typography variant="body1" sx={{ color: "#757575", display: 'flex', alignItems: 'center' }}>
+  Rating:
+  <Typography sx={{ color: "#FFB413", marginLeft: 0.5 }}>★</Typography> 
+  {product.rating}({product.rating * 40}+)
+</Typography>
+
         </Stack>
       </Grid>
     </Grid>

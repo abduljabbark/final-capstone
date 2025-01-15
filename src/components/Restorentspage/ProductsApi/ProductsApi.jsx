@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Box, CircularProgress, Tooltip, Typography, Divider } from "@mui/material";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useLocationContext } from "../../Header/LocationContext/LocationContext.jsx";
+import Product1 from "../../../images/madina-restaurant.webp"; // Import the image here
+import Product2 from "../../../images/shezan-bakers-cavalry-ground.webp"; // Import the image here
+import Product3 from "../../../images/quetta-food.jpg"; // Import the image here
+import Product4 from "../../../images/ahmad-dahi-bhallay.webp"; // Import the image here
+import Product5 from "../../../images/desi-feast-taste-of-real-spices.webp"; // Import the image here
+import Product6 from "../../../images/anmool-nan-shop.webp"; // Import the image here
+import Product7 from "../../../images/lahore-broast-dha.webp"; // Import the image here
+import Product8 from "../../../images/faisal-zahoor-restaurant.webp"; // Import the image here
+import Product9 from "../../../images/mama-bears-cookery.webp"; // Import the image here
+import Product10 from "../../../images/haagen-dazs-kasoori-road.webp"; // Import the image here
+import Product11 from "../../../images/pazookie-cantt.webp"; // Import the image here
+import Product12 from "../../../images/phulka-cuisine.webp"; // Import the image here
+import Product13 from "../../../images/kent-broast.webp"; // Import the image here
 
 const ProductsApi = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -11,27 +23,26 @@ const ProductsApi = () => {
   const navigate = useNavigate();
   const { cityName } = useLocationContext();
 
-  const fetchProducts = async () => {
-    try {
-      setIsLoading(true);
-      const response = await axios.get(
-        "https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood"
-      );
-      if (response.status === 200) {
-        const productsData = response.data.meals.map((meal) => ({
-          id: meal.idMeal,
-          title: meal.strMeal,
-          image: meal.strMealThumb,
-          rating: Math.floor(Math.random() * 5) + 1,
-        }));
-        // Limit to 13 products
-        setProducts(productsData.slice(0, 13));
-      }
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      console.error("Error fetching products:", error);
-    }
+  // Replace API call with dummy products
+  const fetchProducts = () => {
+    setIsLoading(true);
+    const dummyProducts = [
+      { id: 1, title: "Madina Restaurent", image: Product1, rating: 4 },
+      { id: 2, title: "Shezan Bakers-Cavalry Ground", image: Product2, rating: 5 },
+      { id: 3, title: "Quetta Paratha-111", image: Product3, rating: 3 },
+      { id: 4, title: "Ahmad Dahi Bhallay - Cavalry Ground", image: Product4, rating: 4 },
+      { id: 5, title: "Desi Feast (Taste Of Real Spices)", image: Product5, rating: 5 },
+      { id: 6, title: "Anmool Nan shop", image: Product6, rating: 2 },
+      { id: 7, title: "Lahore Broast - DHA", image: Product7, rating: 3 },
+      { id: 8, title: "Faisal Zahoor Restaurant", image: Product8, rating: 4 },
+      { id: 9, title: "Mama Bear’s Cookery", image: Product9, rating: 5 },
+      { id: 10, title: "Haagen Dazs - Kasoori Road", image: Product10, rating: 2 },
+      { id: 11, title: "Pazookie - Cantt", image: Product11, rating: 4 },
+      { id: 12, title: "Phulka Cuisine", image: Product12, rating: 3 },
+      { id: 13, title: "Kent Broast", image: Product13, rating: 5 },
+    ];
+    setProducts(dummyProducts);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -63,42 +74,98 @@ const ProductsApi = () => {
                     justifyContent: "space-between",
                     borderRadius: 3,
                     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                    transition: "transform 0.3s ease",
-                    "&:hover": {
-                      transform: "scale(1.05)",
-                      boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
-                    },
                     cursor: "pointer",
                     position: "relative",
                   }}
-                  onClick={() => navigate(`/product/${product.id}`, { state: product })}
+                  onClick={() => navigate(`/product/${product.title.replace(/\s+/g, "-").toLowerCase()}`, { state: product })}
                 >
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    style={{
-                      height: "180px",
-                      objectFit: "cover",
+                  <Box
+                    sx={{
+                      position: "relative",
+                      overflow: "hidden",
                       borderRadius: "5px",
                     }}
-                    className="img-fluid"
-                  />
-                  <Tooltip title={product.title} placement="top">
-                    <Typography
-                      variant="h6"
+                  >
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      style={{
+                        height: "180px",
+                        width: "100%",
+                        objectFit: "cover",
+                        borderRadius: "5px",
+                        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                      }}
+                      onMouseOver={(e) => {
+                        e.target.style.transform = "scale(1.05)";
+                        e.target.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
+                      }}
+                      onMouseOut={(e) => {
+                        e.target.style.transform = "scale(1)";
+                        e.target.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
+                      }}
+                      className="img-fluid"
+                    />
+                    <Box
                       sx={{
+                        position: "absolute",
+                        top: "10px", // Adjust position from the top
+                        left: "27.5%",
+                        width: "52%",
+                        transform: "translateX(-50%)",
+                        backgroundColor: "#ec008c",
+                        color: "white",
+                        padding: "5px 10px",
+                        borderRadius: "5px",
                         fontSize: "1rem",
                         fontWeight: "bold",
-                        marginTop: 1,
                       }}
                     >
-                      {product.title.length > 20
-                        ? `${product.title.slice(0, 17)}...`
-                        : product.title}
-                    </Typography>
-                  </Tooltip>
-                  <Typography variant="body2" sx={{ color: "#757575" }}>
-                    Rating: {product.rating}★
+                      Welcome gift: free de...
+                    </Box>
+
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: "26%",
+                        left: "19%",
+                        width: "35%",
+                        transform: "translateX(-50%)",
+                        backgroundColor: "#ec008c",
+                        color: "white",
+                        padding: "5px 10px",
+                        borderRadius: "5px",
+                        fontSize: "1rem",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      20% off: mc20
+                    </Box>
+                  </Box>
+
+                  <Box className="d-flex align-items-center justify-content-between">
+                    <Tooltip title={product.title} placement="top">
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontSize: "1rem",
+                          fontWeight: "bold",
+                          marginTop: 1,
+                        }}
+                      >
+                        {product.title.length > 20
+                          ? `${product.title.slice(0, 17)}...`
+                          : product.title}
+                      </Typography>
+                    </Tooltip>
+                 <Typography variant="body1" sx={{ color: "#757575", display: 'flex', alignItems: 'center' }}>
+                   Rating:
+                   <Typography sx={{ color: "#FFB413", marginLeft: 0.5 }}>★</Typography> 
+                   {product.rating}({product.rating * 40}+)
+                 </Typography>
+                  </Box>
+                  <Typography variant="body2" sx={{ color: "black" }}>
+                    Pakistani
                   </Typography>
                   <Divider sx={{ my: 1, borderColor: "black" }} />
                 </Box>
@@ -128,32 +195,42 @@ const ProductsApi = () => {
                     position: "relative",
                   }}
                 >
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    style={{
-                      height: "180px",
-                      objectFit: "cover",
-                      borderRadius: "5px",
-                    }}
-                    className="img-fluid"
-                  />
-                  <Tooltip title={product.title} placement="top">
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontSize: "1rem",
-                        fontWeight: "bold",
-                        marginTop: 1,
+                  <Box sx={{ position: "relative" }}>
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      style={{
+                        height: "180px",
+                        width: "100%",
+                        objectFit: "cover",
+                        borderRadius: "5px",
                       }}
-                    >
-                      {product.title.length > 20
-                        ? `${product.title.slice(0, 17)}...`
-                        : product.title}
-                    </Typography>
-                  </Tooltip>
-                  <Typography variant="body2" sx={{ color: "#757575" }}>
-                    Rating: {product.rating}★
+                      className="img-fluid"
+                    />
+                  </Box>
+                  <Box className="d-flex align-items-center justify-content-between">
+                    <Tooltip title={product.title} placement="top">
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontSize: "1rem",
+                          fontWeight: "bold",
+                          marginTop: 1,
+                        }}
+                      >
+                        {product.title.length > 20
+                          ? `${product.title.slice(0, 17)}...`
+                          : product.title}
+                      </Typography>
+                    </Tooltip>
+                <Typography variant="body1" sx={{ color: "#757575", display: 'flex', alignItems: 'center' }}>
+                  Rating:
+                  <Typography sx={{ color: "#FFB413", marginLeft: 0.5 }}>★</Typography> 
+                  {product.rating}({product.rating * 40}+)
+                </Typography>
+                  </Box>
+                  <Typography variant="body2" sx={{ color: "black" }}>
+                    Pakistani
                   </Typography>
                   <Divider sx={{ my: 1, borderColor: "black" }} />
                   <Box
